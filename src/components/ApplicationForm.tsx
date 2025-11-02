@@ -377,7 +377,7 @@ const onSubmit = async (data: FormData) => {
                       <SelectValue placeholder="Select your rate" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="15-30">$15–30</SelectItem>
+                      <SelectItem value="15-30">$5-15</SelectItem>
                       <SelectItem value="30-50">$30–50</SelectItem>
                       <SelectItem value="50-80">$50–80</SelectItem>
                       <SelectItem value="80-120">$80–120</SelectItem>

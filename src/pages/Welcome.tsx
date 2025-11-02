@@ -10,13 +10,17 @@ const Welcome = () => {
     <div className="min-h-screen bg-gradient-subtle flex flex-col">
       {/* Header */}
       <header className="p-6">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">O</span>
-          </div>
-          <span className="text-2xl font-bold text-foreground">OnSwift</span>
+      <div className="flex items-center gap-2">
+        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center overflow-hidden">
+          <img 
+            src="/white-logo.png" 
+            alt="OnSwift Logo" 
+            className="w-full h-full object-contain"
+          />
         </div>
-      </header>
+        <span className="text-2xl font-bold text-foreground">OnSwift</span>
+      </div>
+    </header>
 
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-12">
