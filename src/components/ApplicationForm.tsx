@@ -16,6 +16,8 @@ import {
 import { CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { PassCriteria } from "./PassCriteria";
+import { API_BASE_URL } from "@/lib/config"; // <-- add this at the top
+
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -77,19 +79,56 @@ export const ApplicationForm = () => {
   const whyWordCount = watchedFields.whyOnSwift ? watchedFields.whyOnSwift.trim().split(/\s+/).length : 0;
   const hasThoughtfulAnswer = whyWordCount >= 50;
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+
+const onSubmit = async (data: FormData) => {
+  setIsSubmitting(true);
+  setSubmitResult(null);
+  // Transform camelCase to snake_case
+  const payload = {
+    full_name: data.fullName,
+    email: data.email,
+    phone: data.phone,
+    category: data.category,
+    experience: data.experience,
+    portfolio: data.portfolio,
+    project1: data.project1,
+    project2: data.project2,
+    project3: data.project3,
+    hourly_rate: data.hourlyRate,
+    availability: data.availability,
+    why_on_swift: data.whyOnSwift,
+  };
+
+
+  try {
+    console.log("Backend URL:", API_BASE_URL);
+
+    const response = await fetch(`${API_BASE_URL}/api/applications/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log(payload);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("Submission successful:", result);
 
     const isRejected = checkAutoRejection(data);
     setSubmitResult(isRejected ? "rejected" : "success");
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    setSubmitResult("rejected");
+  } finally {
     setIsSubmitting(false);
+  }
+};
 
-    // Log submission (in production, this would go to your backend)
-    console.log("Form submission:", { data, isRejected });
-  };
 
   if (submitResult === "rejected") {
     return (
